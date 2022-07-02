@@ -3,12 +3,15 @@
 #include <unistd.h>
 #include <string.h>
 #include <signal.h>
+#include <time.h>
 
 void inthandler(int);
 void exitprop(int);
 void resettime(void);
 int help(void);
 int stopwatch(void);
+void temp(char*);
+void segvhandler(int);
 
 int miliseconds = 0;
 int seconds = 0;
@@ -20,6 +23,7 @@ _Bool color = TRUE;
 int main(void) {
 
 	signal(SIGINT, inthandler);
+	signal(SIGSEGV, segvhandler);
 
 	color = !(has_colors());
 
@@ -83,6 +87,9 @@ start:
 	} else if (ch == 's') {
 		
 		stopwatch();
+		char *str;
+		sprintf(str, "%.2d:%.2d:%.2d.%.2d", hours, minutes, seconds, miliseconds);
+		temp(str);
 		goto start;
 
 	} else if (ch == 'r') {
@@ -114,6 +121,7 @@ cont:
 		
 	mvprintw(1, (col-strlen("Press 'S' To Pause Or Unpause. Press 'E' to Exit."))/2, "Press 'S' To Pause Or Unpause. Press 'E' to Exit.");
 	mvprintw(2, (col-strlen("Press 'F1' To Go Back."))/2, "Press 'F1' To Go Back.");
+	mvprintw(3, (col-strlen("Logs Are Saved in ~/.stopwatch/stopwatch.log"))/2, "Logs Are Saved in ~/.stopwatch/stopwatch.log");
 	mvprintw(row/2, (col-strlen("00:00:00.00"))/2, "%.2d:%.2d:%.2d.%.2d", hours, minutes, seconds, miliseconds);
 	
 	if (color == TRUE) 
@@ -218,8 +226,29 @@ void exitprop(int code) {
 }
 
 void inthandler(int dummy) {
-
+	
 	endwin();
 	exit(130);
+
+}
+
+void temp(char *str) {
+
+	char *home = getenv("HOME");
+	char tmp[1000];
+	sprintf(tmp, "%s/.stopwatch/stopwatch.log", home);
+	FILE *ptr = fopen(tmp, "a");
+	time_t t = time(NULL);
+    char *curr = strtok(ctime(&t), "\n");
+	fprintf(ptr, "%s: %s\n", curr, str);
+	fclose(ptr);
+
+}
+
+void segvhandler(int dummy) {
+
+	temp("SEGV Occurred");
+	endwin();
+	exit(139);
 
 }
