@@ -5,8 +5,9 @@ all: comp
 
 comp:
 
-	${CC} ${name}.c -lncurses -o ${name}
+	${CC} ${name}.c -lncurses -o build/${name}
 
 bin:
-	sudo cp ${name} /bin
-	sudo cp ${name} /usr/bin
+
+	sudo cp build/${name} /bin
+	sudo cp build/${name} /usr/bin

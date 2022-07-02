@@ -9,6 +9,7 @@ void exitprop(int);
 void resettime(void);
 int help(void);
 int stopwatch(void);
+
 int miliseconds = 0;
 int seconds = 0;
 int minutes = 0;
