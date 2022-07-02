@@ -220,6 +220,6 @@ void exitprop(int code) {
 void inthandler(int dummy) {
 
 	endwin();
-    exit(130);
+	exit(130);
 
 }
