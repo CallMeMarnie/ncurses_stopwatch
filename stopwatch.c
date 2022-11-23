@@ -21,6 +21,8 @@ int hours = 0;
 _Bool color = TRUE;
 
 int main(void) {
+	
+init:
 
 	signal(SIGINT, inthandler);
 	signal(SIGSEGV, segvhandler);
