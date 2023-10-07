@@ -17,7 +17,7 @@ cont:
 	if (color == TRUE) 
 		attron(COLOR_PAIR(1));
 
-	mvprintw(0, (col-strlen("Stopwatch Help"))/2, "Stopwatch Help");
+	mvprintw(0, (col-strlen("Stopwatch - Help"))/2, "Stopwatch - Help");
 
 	if (color == TRUE) 
 		attroff(COLOR_PAIR(1));
